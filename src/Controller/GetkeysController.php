@@ -27,4 +27,22 @@ class GetkeysController extends AbstractController
         }
         return $this->json($data);
     }
+
+    #[Route('/getkeys/{key}', name: 'app_getkey')]
+    
+    public function getbyKey(EntityManagerInterface $aPIkey,$key): JsonResponse
+    {
+        $apikeys = $aPIkey->getRepository(APIkey::class)->findBy(['apikey'=>$key]);
+        //echo $key;
+        $data = [];
+        foreach ($apikeys as $k) {
+            $data[] = [
+                'id' => $k->getId(),
+                'TTL' => $k->getTtl(),
+                'Key' => $k->getapikey(),
+                'Created_at'=> $k->getCreatedTime(),
+            ];
+        }
+        return $this->json($data);
+    }
 }
