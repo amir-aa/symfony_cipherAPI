@@ -1,7 +1,7 @@
 <?php
 //define("SALT1","3j4o@irj9frhjo!stZX5hgn34otj8ur5986nrgjkhlg5yQ");
 
-$relativePath = 'C:\Users\Amir\Desktop\php_chatroom\api.db';
+$relativePath = 'C:\Users\Amir\Desktop\php_ch\api.db'; //full path required
 $absolutePath = realpath($relativePath);
 //echo $absolutePath;
 if ($absolutePath === false) {
