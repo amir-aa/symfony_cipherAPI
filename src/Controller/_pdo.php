@@ -5,8 +5,8 @@ $relativePath = 'C:\Users\Amir\Desktop\php_ch\api.db'; //full path required
 $absolutePath = realpath($relativePath);
 //echo $absolutePath;
 if ($absolutePath === false) {
-   // echo "The path $relativePath does not exist.";
-   // exit;
+    echo "The path $relativePath does not exist.";
+    //exit;
 }
 if (!defined('DSN')){define("DSN","sqlite:$absolutePath");}
 

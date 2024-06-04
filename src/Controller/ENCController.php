@@ -6,9 +6,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Utils\GlobalFunctions;
+
+function IsValid($apikey){
+    if(empty($apikey)){return false;}
+    else{
+return GlobalFunctions::is_key_valid($apikey);
 
 
 
+    }
+}
 
 function encryptData($data, $key)
 {
@@ -23,14 +31,21 @@ class ENCController extends AbstractController
     #[Route(path: "/enc", methods: ["POST"])]
     public function encryptionfunc(Request $request): JsonResponse
     {
+        $headers = $request->headers->all();
+        
         $data = json_decode($request->getContent(), true);
         $Plaintext = $data['plaintext'];
         $key = bin2hex(random_bytes(32));
         $cipher = encryptData($Plaintext, $key);
-        return new JsonResponse([
+        $validity=IsValid($headers["x-apikey"][0]);
+        if ($validity==1){       
+            return new JsonResponse([
             "plaintext" => $Plaintext,
             "cipher" => $cipher,
             "key"=>(string)$key
         ]);
+    }
+    else if($validity==-1){return new JsonResponse(["Message"=>"Token Expired"],403);}
+    return new JsonResponse(["Message"=>"Bad Request"],500);
     }
 }
